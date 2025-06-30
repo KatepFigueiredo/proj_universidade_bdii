@@ -70,7 +70,7 @@ def recomendar_material_aula(conn, current_user_id):
             return jsonify({"erro": "Este material já foi recomendado para esta aula."}), 409
         return jsonify({"erro": f"Erro ao recomendar material: {str(e)}"}), 500
 
-@materiais_bp.route("/aula/<int:aula_id>/<string:data_aula_str>/recomendacoes", methods=["GET"])
+@materiais_bp.route("/aula/<int:aula_id>/recomendacoes", methods=["GET"])
 @role_required(allowed_types=['estudante', 'professor'])
 def listar_recomendacoes_por_aula(aula_id, conn, current_user_id):
 

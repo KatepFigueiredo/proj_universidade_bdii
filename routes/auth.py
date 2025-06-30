@@ -6,7 +6,7 @@ from datetime import timedelta
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
-# REGISTO de utilizador
+# REGISTO de um utilizador
 @auth_bp.route("/register", methods=["POST"])
 def register():
     data = request.json
@@ -33,7 +33,7 @@ def register():
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
 
-# LOGIN de utilizador
+# LOGIN de um utilizador
 @auth_bp.route("/login", methods=["POST"])
 def login():
     data = request.json

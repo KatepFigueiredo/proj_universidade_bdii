@@ -3,7 +3,7 @@ from decorators import role_required
 
 aulas_bp = Blueprint('aulas', __name__, url_prefix="/aulas")
 
-# Rota para listar aulas (ambos podem consultar)
+# Rota para listar todas as aulas (ambos podem consultar)
 @aulas_bp.route("/", methods=["GET"])
 @role_required(allowed_types=['estudante', 'professor'])
 def listar_aulas(conn, current_user_id):
@@ -18,7 +18,7 @@ def listar_aulas(conn, current_user_id):
     except Exception as e:
         return jsonify({"erro": f"Erro ao listar aulas: {str(e)}"}), 500
 
-# Rota para criar uma nova aula (apenas professores podem)
+# Rota para criar uma nova aula (apenas os professores podem)
 @aulas_bp.route("/", methods=["POST"])
 @role_required(allowed_types=['professor'])
 def criar_aula(conn, current_user_id):
@@ -47,7 +47,7 @@ def criar_aula(conn, current_user_id):
         conn.rollback()
         return jsonify({"erro": f"Erro ao criar aula: {str(e)}"}), 500
 
-# Rota para atualizar uma aula (apenas professores)
+# Rota para atualizar uma aula (apenas os professores conseguem)
 @aulas_bp.route("/<int:aula_id>", methods=["PUT"])
 @role_required(allowed_types=['professor'])
 def atualizar_aula(aula_id, conn, current_user_id):

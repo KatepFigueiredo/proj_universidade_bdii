@@ -1,4 +1,3 @@
-# participacoes.py
 from flask import Blueprint, request, jsonify
 from decorators import role_required
 from db import db_connection
