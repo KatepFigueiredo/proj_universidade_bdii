@@ -37,4 +37,4 @@ def role_required(allowed_types):  # allowed_types refere-se ao tipo_utilizador 
                 if conn:
                     conn.close()
         return decorated_function
-    return decorator
+    return decorator    
