@@ -51,16 +51,13 @@ CREATE OR REPLACE FUNCTION criar_aula_bd(
     p_hora_fim TIME,
     p_id_professor INT
 )
-RETURNS INT -- Vai retornar o ID da aula criada
+RETURNS INT
 LANGUAGE plpgsql
 AS $$
 DECLARE
     novo_id_aula INT;
     conflito_existe BOOLEAN;
 BEGIN
-    -- 1. Validar Conflito de Horário para o Professor
-    -- O operador OVERLAPS já verifica se os intervalos de tempo se sobrepõem de alguma forma.
-    -- Ele cobre os casos de um intervalo estar dentro do outro, ou se cruzarem parcialmente.
     SELECT EXISTS (
         SELECT 1
         FROM aulas
@@ -72,12 +69,10 @@ BEGIN
             )
     ) INTO conflito_existe;
 
-    -- Se houver um conflito, levanta uma exceção
     IF conflito_existe THEN
         RAISE EXCEPTION 'Professor já tem uma aula agendada para o mesmo horário e dia.';
     END IF;
 
-    -- 2. Inserir a Nova Aula se não houver conflito
     INSERT INTO aulas (titulo, data, hora_inicio, hora_fim, id_professor)
     VALUES (p_titulo, p_data, p_hora_inicio, p_hora_fim, p_id_professor)
     RETURNING id INTO novo_id_aula;
@@ -103,6 +98,7 @@ END;
 $$;
 
 -- Função para criar material didático
+
 CREATE OR REPLACE FUNCTION criar_material_didatico_bd(
     p_titulo VARCHAR,
     p_tipo VARCHAR,
@@ -123,7 +119,8 @@ BEGIN
 END;
 $$;
 
--- Função para recomendar material em aula
+-- Função para recomendar material numa aula
+
 CREATE OR REPLACE FUNCTION recomendar_material_aula_bd(
     p_id_aula INT,
     p_id_material INT,
@@ -135,9 +132,8 @@ LANGUAGE plpgsql
 AS $$
 DECLARE
     nova_recomendacao_id INT;
-    v_data_aula DATE; -- Nova variável para armazenar a data da aula
+    v_data_aula DATE;
 BEGIN
-    -- Obter a data da aula a partir do id_aula
     SELECT data INTO v_data_aula
     FROM aulas
     WHERE id = p_id_aula;
@@ -147,7 +143,6 @@ BEGIN
         RAISE EXCEPTION 'Aula com ID % não encontrada.', p_id_aula;
     END IF;
 
-    -- Inserir na tabela de recomendacoes
     INSERT INTO recomendacoes (id_aula, data_aula, id_material, id_professor, nota)
     VALUES (p_id_aula, v_data_aula, p_id_material, p_id_professor, p_nota)
     RETURNING id INTO nova_recomendacao_id;

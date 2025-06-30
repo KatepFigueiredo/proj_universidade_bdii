@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify
 from decorators import role_required
-from db import db_connection
 
 professores_bp = Blueprint('professors', __name__, url_prefix="/professors")
 
@@ -9,7 +8,6 @@ professores_bp = Blueprint('professors', __name__, url_prefix="/professors")
 def listar_professores(conn, current_user_id):
     try:
         cur = conn.cursor()
-        # Chamar a view
         cur.execute("SELECT id, nome, email, area_especializacao FROM professores_universidade;")
         professors = cur.fetchall()
         cur.close()
@@ -24,7 +22,7 @@ def listar_professores(conn, current_user_id):
 def atualizar_perfil_professor(professor_id, conn, current_user_id):
     
     professor_id_int = int(professor_id)
-    current_user_id_int = int(current_user_id) # current_user_id vem como string do get_jwt_identity() por padrão
+    current_user_id_int = int(current_user_id)
 
     if professor_id_int != current_user_id_int:
         return jsonify({"erro": "Não tem permissão para atualizar este perfil."}), 403
@@ -37,7 +35,6 @@ def atualizar_perfil_professor(professor_id, conn, current_user_id):
 
     try:
         cur = conn.cursor()
-        # Chamar a função
         cur.execute(
             "SELECT atualizar_area_especializacao_professor(%s, %s);",
             (professor_id, area_especializacao)

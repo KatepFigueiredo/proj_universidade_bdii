@@ -58,7 +58,7 @@ def login():
         expires = timedelta(hours=8)
 
         token = create_access_token(
-            identity=str(user[0]),  # ou apenas user[0] se for int
+            identity=str(user[0]),
             additional_claims={"tipo_utilizador": user[2]},
             expires_delta=expires
         )

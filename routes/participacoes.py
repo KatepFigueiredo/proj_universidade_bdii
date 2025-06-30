@@ -10,17 +10,14 @@ participacoes_bp = Blueprint('participacoes', __name__, url_prefix="/participaco
 def matricular_estudante_na_aula(conn, current_user_id):
     data = request.json
     id_aula = data.get("id_aula")
-    # REMOVIDO: data_aula = data.get("data_aula")
     
     id_estudante = current_user_id
 
-    # Ajuste na validação: data_aula não é mais necessária no payload
     if not id_aula:
         return jsonify({"erro": "ID da aula é obrigatório."}), 400
     
     try:
         cur = conn.cursor()
-        # Chamar o procedimento do banco de dados (agora sem data_aula)
         cur.execute("CALL matricular_estudante_aula(%s, %s);", (id_estudante, id_aula))
         conn.commit()
         cur.close()

@@ -7,10 +7,8 @@ BEGIN
         VALUES (
             NEW.id_utilizador,
             'Área de especialização atualizada de "' || COALESCE(OLD.area_especializacao, '[NULO]') || '" para "' || COALESCE(NEW.area_especializacao, '[NULO]') || '"'
-            -- ALTERADO: Adicionado COALESCE para tratar valores NULL
         );
     END IF;
-    -- Adicionar mais condições para outros campos se existirem e quiser auditar
-    RETURN NEW; -- Necessário para triggers AFTER UPDATE
+    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

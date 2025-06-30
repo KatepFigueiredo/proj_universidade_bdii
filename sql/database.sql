@@ -1,4 +1,4 @@
--- Tabela unificada de Utilizadores
+-- Tabela de Utilizadores
 CREATE TABLE utilizadores (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -42,8 +42,7 @@ CREATE TABLE aulas_2025 PARTITION OF aulas
 CREATE TABLE aulas_2026 PARTITION OF aulas
     FOR VALUES FROM ('2026-01-01') TO ('2027-01-01');
 
--- Tabela associativa: Estudantes que assistiram a Aulas
--- Agora inclui a coluna data para referenciar corretamente a tabela particionada
+-- Tabela Participações: Estudantes que assistiram a Aulas
 CREATE TABLE participacoes (
     id_estudante INT,
     id_aula INT,
@@ -63,8 +62,7 @@ CREATE TABLE materiais_didaticos (
 	conteudo BYTEA
 );
 
--- Recomendações de materiais
--- Também inclui data_aula para referenciar corretamente a tabela particionada
+-- Recomendações de Materiais
 CREATE TABLE recomendacoes (
     id SERIAL PRIMARY KEY,
     id_aula INT NOT NULL,
@@ -80,6 +78,6 @@ CREATE TABLE recomendacoes (
 CREATE TABLE professor_log_atividades (
     id SERIAL PRIMARY KEY,
     id_professor INT NOT NULL,
-    acao TEXT NOT NULL, -- Descrição da ação (ex: "Departamento atualizado...")
+    acao TEXT NOT NULL,
     data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

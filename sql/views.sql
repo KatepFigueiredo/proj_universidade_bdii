@@ -13,7 +13,8 @@ FROM
 ORDER BY
     data DESC;
 
--- View para listar professores
+-- View para listar todos os professores
+
 CREATE OR REPLACE VIEW professores_universidade AS
 SELECT
     u.id,
@@ -29,8 +30,8 @@ WHERE
 ORDER BY
     u.nome;
 
--- View para listar recomendações de uma aula (usando parâmetros como filtros no SELECT no Flask)
--- Esta view lista todas as recomendações e a filtragem será feita no Flask para ter flexibilidade
+-- View para listar recomendações numa aula
+
 CREATE OR REPLACE VIEW recomendacoes_detalhadas AS
 SELECT
     r.id,
@@ -49,7 +50,8 @@ JOIN
 JOIN
     utilizadores u ON r.id_professor = u.id;
 
--- View para listar aulas assistidas por estudante
+-- View para listar as aulas assistidas por um estudante
+
 CREATE OR REPLACE VIEW aulas_assistidas_por_estudante AS
 SELECT
     p.id_estudante,

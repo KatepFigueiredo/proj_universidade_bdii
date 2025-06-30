@@ -1,14 +1,14 @@
 -- Procedimento para matricular estudante em aula
+
 CREATE OR REPLACE PROCEDURE matricular_estudante_aula(
     p_id_estudante INT,
     p_id_aula INT
-    -- REMOVIDO p_data_aula da assinatura
 )
 LANGUAGE plpgsql
 AS $$
 DECLARE
     estudante_existe BOOLEAN;
-    v_data_aula DATE; -- Nova variável para armazenar a data da aula
+    v_data_aula DATE;
     ja_matriculado BOOLEAN;
 BEGIN
     -- 1. Verificar se estudante existe e é do tipo 'estudante'
@@ -42,6 +42,5 @@ BEGIN
     INSERT INTO participacoes (id_estudante, id_aula, data_aula)
     VALUES (p_id_estudante, p_id_aula, v_data_aula);
 
-    -- Não use COMMIT/ROLLBACK aqui, deixe para a aplicação Flask.
 END;
 $$;

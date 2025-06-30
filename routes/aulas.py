@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from decorators import role_required # Importe o decorador
+from decorators import role_required
 
 aulas_bp = Blueprint('aulas', __name__, url_prefix="/aulas")
 
@@ -47,7 +47,7 @@ def criar_aula(conn, current_user_id):
         conn.rollback()
         return jsonify({"erro": f"Erro ao criar aula: {str(e)}"}), 500
 
-# Exemplo de rota para atualizar uma aula (apenas professores)
+# Rota para atualizar uma aula (apenas professores)
 @aulas_bp.route("/<int:aula_id>", methods=["PUT"])
 @role_required(allowed_types=['professor'])
 def atualizar_aula(aula_id, conn, current_user_id):
@@ -56,12 +56,6 @@ def atualizar_aula(aula_id, conn, current_user_id):
     aula_data = data.get("data")
     hora_inicio = data.get("hora_inicio")
     hora_fim = data.get("hora_fim")
-
-    # Opcional: Adicionar verificação para garantir que o professor só edita as suas próprias aulas
-    # cur.execute("SELECT id_professor FROM aulas WHERE id = %s;", (aula_id,))
-    # professor_aula = cur.fetchone()
-    # if professor_aula and professor_aula[0] != current_user_id:
-    #    return jsonify({"erro": "Não tem permissão para editar esta aula."}), 403
 
     update_fields = []
     update_values = []

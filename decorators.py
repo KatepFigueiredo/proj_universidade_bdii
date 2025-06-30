@@ -27,14 +27,14 @@ def role_required(allowed_types):  # allowed_types refere-se ao tipo_utilizador 
 
             conn = None
             try:
-                conn = db_connection(role=db_role)  # A conexão é aberta com a role
-                kwargs['current_user_id'] = user_id  # Passa o ID do utilizador
-                kwargs['conn'] = conn  # Passa a conexão com a role aplicada
+                conn = db_connection(role=db_role)
+                kwargs['current_user_id'] = user_id
+                kwargs['conn'] = conn
                 return f(*args, **kwargs)
             except Exception as e:
                 return jsonify({"erro": f"Erro na base de dados: {str(e)}"}), 500
             finally:
                 if conn:
-                    conn.close()  # Garante que a conexão seja fechada
+                    conn.close()
         return decorated_function
     return decorator
